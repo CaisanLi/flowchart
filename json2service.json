@@ -1,0 +1,8 @@
+{
+  "url": "yapi-swagger.json",
+  "remoteUrl": "http://192.168.5.130:3000/api/open/plugin/export-full?type=json&pid=7&status=all&token=1e44fe515b3d85118ce219b7f9b7be717e0dfd09f3472bea092b19bfdce871dc",
+  "type": "yapi",
+  "swaggerParser": {
+    "-o": "./services"
+  }
+}
