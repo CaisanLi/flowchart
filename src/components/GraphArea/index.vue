@@ -1,8 +1,6 @@
 <template>
   <div class="w-full h-full relative">
-    <div v-for="item in list" :key="item.id" class="graph-item absolute" :style="parseStyle(item)" @mousedown="onMousedown($event, item)">
-      <component :is="item.type + '-graph'" v-bind="item" />
-    </div>
+    <graph-item v-for="item in list" :key="item.id" :data="item" />
   </div>
 </template>
 
@@ -10,11 +8,11 @@
   import { BaseGraph } from '@/utils/Graph';
   import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
   import { GraphAreaChangeEvent, StartPoint } from './index';
-  import { RectangleGraph } from '@/components/Graph/index';
+  import GraphItem from '@/components/Graph/index.vue';
 
   @Component({
     components: {
-      RectangleGraph
+      GraphItem
     }
   })
   export default class  extends Vue {
@@ -90,19 +88,6 @@
         this.downItem = null;
         this.isDown = false;
       }
-    }
-    /**
-     * 处理样式数据
-     */
-    parseStyle(item: BaseGraph) {
-      const { width, height, top, left } = item;
-      const style: { [name: string]: number | string } = {
-        width: width ? width + 'px' : 0,
-        height: height ? height + 'px' : 0,
-        top: top ? top + 'px' : 0,
-        left: left ? left + 'px' : 0
-      };
-      return style;
     }
 
     @Emit()
