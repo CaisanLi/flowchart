@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts">
-// import Vue from 'vue';
-// import Component from 'vue-class-component';
+import uuid from '@/utils/uuid';
 import { Vue, Component } from 'vue-property-decorator'
 import ToolBar from '@/components/ToolBar/index.vue';
 import GraphArea from '@/components/GraphArea/index.vue';
@@ -57,7 +56,9 @@ export default class Index extends Vue {
    * 创建一个圆角矩形
    */
   createRectangle() {
-    const graph = new BaseGraph();
+    const graph = new BaseGraph({
+      id: uuid()
+    });
     this.pushGraph(graph);
   }
   /**
