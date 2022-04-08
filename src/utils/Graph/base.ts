@@ -7,28 +7,54 @@ export enum GraphTypeEnum {
   parallelogram = 'parallelogram'
 }
 
+
+
 export type GraphOptionType = {
   id: string,
   width?: number,
   height?: number,
   left?: number,
   top?: number,
-  type?: GraphTypeEnum
+  type?: GraphTypeEnum,
+  borderColor?: string,
+  borderWidth?: number,
+  backgroundColor?: string
+}
+
+// Req
+
+// 默认值
+export const graphDefaultValue: Required<GraphOptionType> = {
+  id: '',
+  width: 200,
+  height: 200,
+  left: 0,
+  top: 0,
+  type: GraphTypeEnum.rectangle,
+  borderColor: '#333333',
+  borderWidth: 2,
+  backgroundColor: '#FFFFFF'
 }
 
 class Graph {
   // 唯一ID
   public id: string = '';
   // 宽度
-  public width: number = 200;
+  public width: number = graphDefaultValue.width;
   // 高度
-  public height: number = 200;
+  public height: number = graphDefaultValue.height;
   // left
-  public left: number = 0;
+  public left: number = graphDefaultValue.left;
   // top
-  public top: number = 0;
+  public top: number = graphDefaultValue.top;
+  // borderColor
+  public borderColor: string = graphDefaultValue.borderColor;
+  // borderWidth
+  public borderWidth: number = graphDefaultValue.borderWidth;
+  // backgroundColor
+  public backgroundColor: string = graphDefaultValue.backgroundColor;
   // 类型
-  public type: GraphTypeEnum = GraphTypeEnum.rectangle;
+  public type: GraphTypeEnum = graphDefaultValue.type;
 
   constructor(option?: GraphOptionType) {
     if (option) {
@@ -47,6 +73,15 @@ class Graph {
       }
       if (option.type !== undefined) {
         this.type = option.type;
+      }
+      if (option.backgroundColor !== undefined) {
+        this.backgroundColor = option.backgroundColor;
+      }
+      if (option.borderColor !== undefined) {
+        this.borderColor = option.borderColor;
+      }
+      if (option.borderWidth !== undefined) {
+        this.borderWidth = option.borderWidth;
       }
     }
   }

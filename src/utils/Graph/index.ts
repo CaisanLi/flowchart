@@ -1,3 +1,3 @@
-import BaseGraph, { GraphTypeEnum } from './base';
+import BaseGraph, { GraphTypeEnum, graphDefaultValue } from './base';
 
-export { BaseGraph, GraphTypeEnum };
+export { BaseGraph, GraphTypeEnum, graphDefaultValue };
