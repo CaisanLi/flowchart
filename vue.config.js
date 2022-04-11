@@ -20,7 +20,7 @@ function getGitHash () {
 }
 
 const isProd = process.env.NODE_ENV !== 'development';
-const port = process.env.port || 19090; // dev port
+const port = process.env.port || 19110; // dev port
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // 若对接用户中心须设置前缀 如：'/otherSystem'
 
