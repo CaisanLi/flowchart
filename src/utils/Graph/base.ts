@@ -2,6 +2,8 @@
  * 图形基础类
  */
 
+import { ZConnection } from './index';
+
 export enum GraphTypeEnum {
   rectangle = 'rectangle',
   parallelogram = 'parallelogram'
@@ -55,6 +57,8 @@ class Graph {
   public backgroundColor: string = graphDefaultValue.backgroundColor;
   // 类型
   public type: GraphTypeEnum = graphDefaultValue.type;
+  // 缓存连接信息
+  public connections?: ZConnection[];
 
   constructor(option?: GraphOptionType) {
     if (option) {
@@ -84,6 +88,13 @@ class Graph {
         this.borderWidth = option.borderWidth;
       }
     }
+  }
+  /**
+   * 添加连接
+   * @param connection 
+   */
+  addConnection(connection: ZConnection) {
+    this.connections?.push(connection);
   }
 }
 

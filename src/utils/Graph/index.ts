@@ -1,3 +1,6 @@
 import BaseGraph, { GraphTypeEnum, graphDefaultValue } from './base';
+import { Connection } from 'jsplumb';
 
-export { BaseGraph, GraphTypeEnum, graphDefaultValue };
+interface ZConnection extends Connection {}
+
+export { BaseGraph, GraphTypeEnum, graphDefaultValue, ZConnection };
