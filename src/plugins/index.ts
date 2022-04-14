@@ -1,4 +1,7 @@
 type Plugins = {
   [name: string]: ZPluginObject
 }
-export default {  } as Plugins;
+
+import jsplumb from './jsplumb';
+
+export default { jsplumb } as Plugins;
