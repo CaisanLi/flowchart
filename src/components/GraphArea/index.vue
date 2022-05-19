@@ -63,6 +63,11 @@
       $jpIns.bind('endpointDblClick', endpoint => {
         console.log('endpointDblClick info：', endpoint)
       })
+      // 连接前的检查，判断是否建立连接
+      $jpIns.bind('beforeDrop', info => {
+        console.log('beforeDrop：', info)
+        return true;
+      })
     }
     /**
      * 清除jsPlumb基础配置
@@ -84,7 +89,3 @@
     }
   }
 </script>
-
-<style lang="less" scoped>
-
-</style>
