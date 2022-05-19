@@ -23,8 +23,6 @@ export type GraphOptionType = {
   backgroundColor?: string
 }
 
-// Req
-
 // 默认值
 export const graphDefaultValue: Required<GraphOptionType> = {
   id: '',
@@ -63,30 +61,7 @@ class Graph {
   constructor(option?: GraphOptionType) {
     if (option) {
       this.id = option.id;
-      if (option.width !== undefined) {
-        this.width = option.width;
-      }
-      if (option.height !== undefined) {
-        this.height = option.height;
-      }
-      if (option.left !== undefined) {
-        this.left = option.left;
-      }
-      if (option.top !== undefined) {
-        this.top = option.top
-      }
-      if (option.type !== undefined) {
-        this.type = option.type;
-      }
-      if (option.backgroundColor !== undefined) {
-        this.backgroundColor = option.backgroundColor;
-      }
-      if (option.borderColor !== undefined) {
-        this.borderColor = option.borderColor;
-      }
-      if (option.borderWidth !== undefined) {
-        this.borderWidth = option.borderWidth;
-      }
+      this.setMember(option);
     }
   }
   /**
@@ -95,6 +70,36 @@ class Graph {
    */
   addConnection(connection: ZConnection) {
     this.connections?.push(connection);
+  }
+  /**
+   * 设置成员属性
+   * @param option 
+   */
+  setMember(option: GraphOptionType) {
+    if (option.width !== undefined) {
+      this.width = option.width;
+    }
+    if (option.height !== undefined) {
+      this.height = option.height;
+    }
+    if (option.left !== undefined) {
+      this.left = option.left;
+    }
+    if (option.top !== undefined) {
+      this.top = option.top
+    }
+    if (option.type !== undefined) {
+      this.type = option.type;
+    }
+    if (option.backgroundColor !== undefined) {
+      this.backgroundColor = option.backgroundColor;
+    }
+    if (option.borderColor !== undefined) {
+      this.borderColor = option.borderColor;
+    }
+    if (option.borderWidth !== undefined) {
+      this.borderWidth = option.borderWidth;
+    }
   }
 }
 
