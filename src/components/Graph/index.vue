@@ -1,26 +1,41 @@
 <template>
-  <div class="graph-item absolute" :id="data.id" :style="parseStyle(data)" @mouseover="onHover">
-    <component :is="data.type + '-graph'" />
+  <div class="graph-item absolute" :id="data.id" :style="parseStyle(data)" @mouseover="onHover" @mouseout="onOut">
+    <div class="relative">
+      <span :id="data.id + '-end'">End</span>
+      <component :is="data.type + '-graph'" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+  import { Mutations } from '@/store/modules/graph';
   import { BaseGraph } from '@/utils/Graph';
   import { AnchorStaticId, EndpointOptions } from 'jsplumb';
   import { Component, Prop, Vue } from 'vue-property-decorator';
+  import { namespace } from 'vuex-class';
   import RectangleGraph from './Rectangle.vue';
+
+  const graphModule = namespace('graph');
+
   @Component({
     components: {
       RectangleGraph
     }
   })
   export default class  extends Vue {
+    // vuex start
+    @graphModule.Mutation('SET_GRAPH') setGraph!: Mutations['SET_GRAPH'];
+    // vuex end
     // props start
     /**
      * data 图形对象
      */
     @Prop({ default: () => {}, type: Object }) readonly data!: BaseGraph;
     // props end
+
+    // data start
+    id: string = ''
+    // data end
     /**
      * 处理样式数据
      */
@@ -36,10 +51,22 @@
     }
 
     /**
-     * 
+     * 移入图形
      */
-    onHover(evt: MouseEvent) {
-      console.log('evt:', evt)
+    onHover() {
+      const endPoints = this.$jpIns.getEndpoints(this.id)
+      endPoints.forEach(point => {
+        point.setHover(true)
+      })
+    }
+    /**
+     * 移出图形
+     */
+    onOut() {
+      const endPoints = this.$jpIns.getEndpoints(this.id)
+      endPoints.forEach(point => {
+        point.setHover(false)
+      })
     }
 
     /**
@@ -47,22 +74,25 @@
      */
     setBase() {
       const elId = this.data.id;
-      this.$jpIns.draggable(elId);
-
-      // const exampleGreyEndpointOptions: EndpointOptions = {
-      //   endpoint: 'Rectangle',
-      //   isSource: true,
-      //   maxConnections: -1,
-      //   connectorStyle: { stroke: '#666' },
-      //   isTarget: true,
-      // };
+      this.id = elId;
+      
+      this.$jpIns.draggable(elId, {
+        cursor: 'move',
+        stop: (params) => {
+          this.setGraph({ 
+            id: elId,
+            top: params.pos[1],
+            left: params.pos[0] 
+          })
+        }
+      })
 
       const anchors: AnchorStaticId[] = ['Top', 'Bottom', 'Left', 'Right'];
       const endPoints: EndpointOptions[] = [];
 
-      anchors.forEach(val => {
+      anchors.forEach(() => {
         endPoints.push({
-          anchor: val,
+          anchor: ['Continuous'],
           endpoint: ['Dot', {
             radius: 5
           }],
@@ -79,10 +109,27 @@
             fill: 'red'
           },
           isTarget: true,
+          connectorOverlays: [['Arrow', { location: 1 }]],          
         })
       })
       
-      this.$jpIns.addEndpoints(elId, endPoints);
+      // this.$jpIns.addEndpoints(elId, endPoints);
+      this.$jpIns.addEndpoint(elId, {
+        maxConnections: 0,
+        endpoint: 'Blank',
+      })
+
+      const common = {
+        parent: elId,
+        endpoint: 'Blank',
+        anchor: [ 'Perimeter', { shape: 'Circle', rotation: 25 } ],
+        isTarget: true,
+        isSource: true,
+        connectorOverlays: [['Arrow', { location: 1 }]],
+      }
+
+      this.$jpIns.makeSource(elId + '-end', common)
+      this.$jpIns.makeTarget(elId + '-end', common)
     }
 
     mounted() {
@@ -93,10 +140,10 @@
 
 <style lang="less">
   .end-point {
-    background-color: #EEE;
-
-    &-hover {
-      background-color: #DDD;
+    &-connection {
+      circle {
+        fill: rgb(221 86 86);
+      }
     }
   }
 </style>
